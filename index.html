@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<title>Bootstrap CRUD Data Table for Database with Modal Form</title>
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto|Varela+Round">
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+	<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+	<link rel="stylesheet" href="css/style.css">
+	<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+
+	<script>
+		$(document).ready(function () {
+			// Activate tooltip
+			$('[data-toggle="tooltip"]').tooltip();
+
+			// Select/Deselect checkboxes
+			var checkbox = $('table tbody input[type="checkbox"]');
+			$("#selectAll").click(function () {
+				if (this.checked) {
+					checkbox.each(function () {
+						this.checked = true;
+					});
+				} else {
+					checkbox.each(function () {
+						this.checked = false;
+					});
+				}
+			});
+			checkbox.click(function () {
+				if (!this.checked) {
+					$("#selectAll").prop("checked", false);
+				}
+			});
+		});
+	</script>
+</head>
+
+<body>
+	<div class="container-xl">
+		<div class="table-responsive">
+			<div class="table-wrapper">
+				<div class="table-title">
+					<div class="row">
+						<div class="col-sm-6">
+							<h2>Manage <b>Employees</b></h2>
+						</div>
+						<div class="col-sm-6">
+							<a href="#addEmployeeModal" class="btn btn-success" data-toggle="modal"><i
+									class="material-icons">&#xE147;</i> <span>Add New Employee</span></a>
+							<a href="#deleteEmployeeModal" class="btn btn-danger" data-toggle="modal"><i
+									class="material-icons">&#xE15C;</i> <span>Delete</span></a>
+						</div>
+					</div>
+				</div>
+				<table class="table table-striped table-hover">
+					<thead>
+						<tr>
+							<th>
+								<span class="custom-checkbox">
+									<input type="checkbox" id="selectAll">
+									<label for="selectAll"></label>
+								</span>
+							</th>
+							<th>Id</th>
+							<th>Name</th>
+							<th>LastName</th>
+							<th>Job Position</th>
+							<th>Salary</th>
+						</tr>
+					</thead>
+					<tbody id="todos">
+					</tbody>
+				</table>
+				<div class="clearfix">
+					<div class="hint-text">Showing <b>5</b> out of <b>25</b> entries</div>
+					<ul class="pagination">
+						<li class="page-item disabled"><a href="#">Previous</a></li>
+						<li class="page-item"><a href="#" class="page-link">1</a></li>
+						<li class="page-item"><a href="#" class="page-link">2</a></li>
+						<li class="page-item active"><a href="#" class="page-link">3</a></li>
+						<li class="page-item"><a href="#" class="page-link">4</a></li>
+						<li class="page-item"><a href="#" class="page-link">5</a></li>
+						<li class="page-item"><a href="#" class="page-link">Next</a></li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- Edit Modal HTML -->
+	<div id="addEmployeeModal" class="modal fade">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<form action="javascript:void(0);" method="POST" onsubmit="addItem()">
+					<div class="modal-header">
+						<h4 class="modal-title">Add Employee</h4>
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+					</div>
+					<div class="modal-body">
+						<div class="form-group">
+							<label>Name</label>
+							<input type="text" id="add-name" class="form-control" required>
+						</div>
+						<div class="form-group">
+							<label>LastName</label>
+							<input type="text" id="add-lastname" class="form-control" required>
+						</div>
+						<div class="form-group">
+							<label>Job Position</label>
+							<input type="text" id="add-positionJob" class="form-control" required>
+
+						</div>
+						<div class="form-group">
+							<label>Salary</label>
+							<input type="text" id="add-salary" class="form-control" required>
+						</div>
+					</div>
+					<div class="modal-footer">
+						<input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
+						<input type="submit" class="btn btn-success" value="Add">
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+	<!-- Edit Modal HTML -->
+	<div id="editForm">
+		<form action="javascript:void(0);" onsubmit="updateItem()">
+				<h4 class="text-center">Edit Employee</h4>
+			<input type="hidden" id="edit-id">
+			<input type="checkbox" id="edit-isComplete">
+
+			<div class="modal-body">
+				<div class="form-group">
+					<label>Name</label>
+					<input type="text" id="edit-name" class="form-control" required>
+				</div>
+				<div class="form-group">
+					<label>LastName</label>
+					<input type="text" id="edit-lastname" class="form-control" required>
+				</div>
+				<div class="form-group">
+					<label>Job Position</label>
+					<input type="text" id="edit-job" class="form-control" required>
+
+				</div>
+				<div class="form-group">
+					<label>Salary</label>
+					<input type="number" id="edit-salary" class="form-control" required>
+				</div>
+			</div>
+			<div class="container">
+				<input type="submit" value="Save">
+				<a class="btn" onclick="closeInput()" aria-label="Close">&#10006;</a>
+			</div>
+			
+		</form>
+	</div>
+
+	<!-- Delete Modal HTML -->
+	<div id="deleteEmployeeModal" class="modal fade">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<form>
+					<div class="modal-header">
+						<h4 class="modal-title">Delete Employee</h4>
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+					</div>
+					<div class="modal-body">
+						<p>Are you sure you want to delete these Records?</p>
+						<p class="text-warning"><small>This action cannot be undone.</small></p>
+					</div>
+					<div class="modal-footer">
+						<input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
+						<input type="submit" class="btn btn-danger" value="Delete">
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+	<script src="js/main.js"></script>
+	<script text="text/javascript">
+		getItems();
+	</script>
+</body>
+
+</html>
