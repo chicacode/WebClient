@@ -3,7 +3,6 @@ const uri = 'https://localhost:44376/api/employees';
 let todos = [];
 
 function getItems() {
-
   fetch(uri)
     .then(response => response.json())
     .then(data => JSON.stringify(data))
@@ -15,17 +14,17 @@ function addItem() {
   const addNameTextbox = document.getElementById('add-name');
   const addLastNameTextbox = document.getElementById('add-lastname');
   const addJobTextbox = document.getElementById('add-positionJob');
-  const addSalaryTextbox = parseInt(document.getElementById('add-salary'));
+  const addSalaryTextbox = document.getElementById('add-salary');
 /* Fix this shit */
-console.log("El salario es " + addSalaryTextbox);
+
   const item = {
     isComplete: false,
     name: addNameTextbox.value.trim(),
     lastName: addLastNameTextbox.value.trim(),
     positionJob: addJobTextbox.value.trim(),
-    salary: addSalaryTextbox.value
+    salary: parseInt(addSalaryTextbox.value)
   };
-
+  console.log("El salario es " + item.salary);
   fetch(uri, {
     method: 'POST',
     headers: {
@@ -34,7 +33,7 @@ console.log("El salario es " + addSalaryTextbox);
     },
     body: JSON.stringify(item)
   })
-    .then(response => response.json())
+    .then(response =>response.json())
     .then(() => {
       getItems();
       addNameTextbox.value = '';
@@ -54,16 +53,21 @@ console.log("El salario es " + addSalaryTextbox);
 // }
 
 function displayEditForm(id) {
-  console.log("Hooola en edición");
+ 
+  let form = document.getElementById('editForm');
   
+  if (form.style.display === "none") {
+    form.style.display = "block";
+  } else {
+    form.style.display = "none";
+  }
+
   const item = todos.find(item => item.id === id);
 
   document.getElementById('edit-name').value = item.name;
   document.getElementById('edit-lastname').value = item.lastname;
   document.getElementById('edit-job').value = item.name;
   document.getElementById('edit-salary').value = item.name;
-  // document.getElementById('edit-isComplete').checked = item.isComplete;
-  // document.getElementById('editForm').style.display = 'block';
 }
 
 // function updateItem() {

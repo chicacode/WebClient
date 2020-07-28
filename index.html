@@ -117,7 +117,7 @@
 						</div>
 						<div class="form-group">
 							<label>Salary</label>
-							<input type="text" id="add-salary" class="form-control" required>
+							<input type="number" id="add-salary" class="form-control" required>
 						</div>
 					</div>
 					<div class="modal-footer">
@@ -129,12 +129,10 @@
 		</div>
 	</div>
 	<!-- Edit Modal HTML -->
-	<div id="editForm">
+	<div id="editForm" class="editForm">
 		<form action="javascript:void(0);" onsubmit="updateItem()">
 				<h4 class="text-center">Edit Employee</h4>
 			<input type="hidden" id="edit-id">
-			<input type="checkbox" id="edit-isComplete">
-
 			<div class="modal-body">
 				<div class="form-group">
 					<label>Name</label>

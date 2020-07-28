@@ -222,3 +222,7 @@ table.table .avatar {
 .modal form label {
 	font-weight: normal;
 }	
+
+.editForm{
+	display: none;
+}
