@@ -44,13 +44,14 @@ function addItem() {
     .catch(error => console.error('Unable to add item.', error));
 }
 
-// function deleteItem(id) {
-//   fetch(`${uri}/${id}`, {
-//     method: 'DELETE'
-//   })
-//   .then(() => getItems())
-//   .catch(error => console.error('Unable to delete item.', error));
-// }
+function deleteItem(id) {
+  console.log("En delete: "+ id);
+  fetch(`${uri}/${id}`, {
+    method: 'DELETE'
+  })
+  .then(() => getItems())
+  .catch(error => console.error('Unable to delete item.', error));
+}
 
 function displayEditForm(id) {
  
@@ -63,7 +64,6 @@ function displayEditForm(id) {
   }
 
   const item = todos.find(item => item.id === id);
-
   document.getElementById('edit-name').value = item.name;
   document.getElementById('edit-lastname').value = item.lastname;
   document.getElementById('edit-job').value = item.name;
@@ -109,12 +109,6 @@ function _displayItems(data) {
   const tBody = document.getElementById('todos');
   tBody.innerHTML = '';
 
-  // _displayCount(data.length);
-  // "employeeId": 1,
-  // "name": "Peter",
-  // "lastName": "Parker",
-  // "positionJob": "SuperHero",
-  // "salary": 24.00
   const button = document.createElement('button');
   data = JSON.parse(data);
   data.forEach(item => {
@@ -129,7 +123,7 @@ function _displayItems(data) {
 
     let deleteButton = button.cloneNode(false);
     deleteButton.innerText = 'Delete';
-    deleteButton.setAttribute('onclick', `deleteItem(${item.id})`);
+    deleteButton.setAttribute('onclick', `deleteItem(${item.employeeId})`);
 
     let tr = tBody.insertRow();
     
