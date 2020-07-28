@@ -22,7 +22,7 @@ function addItem() {
     name: addNameTextbox.value.trim(),
     lastName: addLastNameTextbox.value.trim(),
     positionJob: addJobTextbox.value.trim(),
-    salary: parseInt(addSalaryTextbox.value)
+    salary: parseFloat(addSalaryTextbox.value)
   };
   console.log("El salario es " + item.salary);
   fetch(uri, {
@@ -54,7 +54,7 @@ function deleteItem(id) {
 }
 
 function displayEditForm(id) {
- 
+ console.log("El id es: " + id);
   let form = document.getElementById('editForm');
   
   if (form.style.display === "none") {
@@ -63,46 +63,54 @@ function displayEditForm(id) {
     form.style.display = "none";
   }
 
-  const item = todos.find(item => item.id === id);
+  const item = todos.find(item => item.employeeId === id);
+
+  document.getElementById('edit-id').value = item.employeeId;
+  console.log(item.employeeId);
   document.getElementById('edit-name').value = item.name;
-  document.getElementById('edit-lastname').value = item.lastname;
-  document.getElementById('edit-job').value = item.name;
-  document.getElementById('edit-salary').value = item.name;
+  document.getElementById('edit-lastname').value = item.lastName;
+  document.getElementById('edit-job').value = item.positionJob;
+  document.getElementById('edit-salary').value = item.salary;
+  document.getElementById('edit-isComplete').checked = item.isComplete;
 }
 
-// function updateItem() {
-//   const itemId = document.getElementById('edit-id').value;
-//   const item = {
-//     id: parseInt(itemId, 10),
-//     isComplete: document.getElementById('edit-isComplete').checked,
-//     name: document.getElementById('edit-name').value.trim()
-//   };
+function updateItem() {
+  const itemId = document.getElementById('edit-id').value;
+  console.log(itemId);
+  const item = {
+    id: parseInt(itemId, 10),
+    isComplete: document.getElementById('edit-isComplete').checked,
+    name: document.getElementById('edit-name').value.trim(),
+    lastName: document.getElementById('edit-lastname').value.trim(),
+    positionJob: document.getElementById('edit-job').value.trim(),
+    salary: document.getElementById('edit-salary').value.trim()
+  };
+  console.log(item);
+  fetch(`${uri}/${item.id}`, {
+    method: 'PUT',
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(item)
+  })
+  .then(() => getItems())
+  .catch(error => console.error('Unable to update item.', error));
 
-//   fetch(`${uri}/${itemId}`, {
-//     method: 'PUT',
-//     headers: {
-//       'Accept': 'application/json',
-//       'Content-Type': 'application/json'
-//     },
-//     body: JSON.stringify(item)
-//   })
-//   .then(() => getItems())
-//   .catch(error => console.error('Unable to update item.', error));
+  closeInput();
 
-//   closeInput();
+  return false;
+}
 
-//   return false;
-// }
+function closeInput() {
+  document.getElementById('editForm').style.display = 'none';
+}
 
-// function closeInput() {
-//   document.getElementById('editForm').style.display = 'none';
-// }
+function _displayCount(itemCount) {
+  const name = (itemCount === 1) ? 'to-do' : 'to-dos';
 
-// function _displayCount(itemCount) {
-//   const name = (itemCount === 1) ? 'to-do' : 'to-dos';
-
-//   document.getElementById('counter').innerText = `${itemCount} ${name}`;
-// }
+  document.getElementById('counter').innerText = `${itemCount} ${name}`;
+}
 
 function _displayItems(data) {
   
@@ -119,7 +127,7 @@ function _displayItems(data) {
 
     let editButton = button.cloneNode(false);
     editButton.innerText = 'Edit';
-    editButton.setAttribute('onclick', `displayEditForm(${item.id})`);
+    editButton.setAttribute('onclick', `displayEditForm(${item.employeeId})`);
 
     let deleteButton = button.cloneNode(false);
     deleteButton.innerText = 'Delete';
