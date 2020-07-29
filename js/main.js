@@ -15,7 +15,6 @@ function addItem() {
   const addLastNameTextbox = document.getElementById('add-lastname');
   const addJobTextbox = document.getElementById('add-positionJob');
   const addSalaryTextbox = document.getElementById('add-salary');
-/* Fix this shit */
 
   const item = {
     isComplete: false,
@@ -66,7 +65,7 @@ function displayEditForm(id) {
   const item = todos.find(item => item.employeeId === id);
 
   document.getElementById('edit-id').value = item.employeeId;
-  console.log(item.employeeId);
+
   document.getElementById('edit-name').value = item.name;
   document.getElementById('edit-lastname').value = item.lastName;
   document.getElementById('edit-job').value = item.positionJob;
@@ -98,22 +97,18 @@ function updateItem() {
   .catch(error => console.error('Unable to update item.', error));
 
   closeInput();
-
   return false;
 }
 
 function closeInput() {
+
   document.getElementById('editForm').style.display = 'none';
+  
 }
 
-function _displayCount(itemCount) {
-  const name = (itemCount === 1) ? 'to-do' : 'to-dos';
-
-  document.getElementById('counter').innerText = `${itemCount} ${name}`;
-}
 
 function _displayItems(data) {
-  
+
   const tBody = document.getElementById('todos');
   tBody.innerHTML = '';
 
