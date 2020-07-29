@@ -92,10 +92,13 @@ function updateItem() {
     },
     body: JSON.stringify(item)
   })
-  .then(response =>response.json())
-  .then(() => getItems())
+  .then(response =>{
+    alert("Has editado correctamente el empleado: " + item.name);
+    response.json()}
+    )
+  .then(() =>getItems())
   .catch(error => console.error('Unable to update item.', error));
-
+  
   closeInput();
   return false;
 }
