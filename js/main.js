@@ -104,9 +104,8 @@ function updateItem() {
 }
 
 function closeInput() {
-
   document.getElementById('editForm').style.display = 'none';
-  
+ 
 }
 
 
