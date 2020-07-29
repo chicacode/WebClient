@@ -24,7 +24,7 @@ function addItem() {
     positionJob: addJobTextbox.value.trim(),
     salary: parseFloat(addSalaryTextbox.value)
   };
-  console.log("El salario es " + item.salary);
+
   fetch(uri, {
     method: 'POST',
     headers: {
@@ -75,18 +75,17 @@ function displayEditForm(id) {
 }
 
 function updateItem() {
-  const itemId = document.getElementById('edit-id').value;
-  console.log(itemId);
+  const itemId = parseInt(document.getElementById('edit-id').value);
+
   const item = {
-    id: parseInt(itemId, 10),
-    isComplete: document.getElementById('edit-isComplete').checked,
+    employeeId: parseInt(itemId, 10),
     name: document.getElementById('edit-name').value.trim(),
     lastName: document.getElementById('edit-lastname').value.trim(),
     positionJob: document.getElementById('edit-job').value.trim(),
-    salary: document.getElementById('edit-salary').value.trim()
+    salary:  parseFloat(document.getElementById('edit-salary').value)
   };
-  console.log(item);
-  fetch(`${uri}/${item.id}`, {
+
+  fetch(`${uri}/${item.employeeId}`, {
     method: 'PUT',
     headers: {
       'Accept': 'application/json',
@@ -94,6 +93,7 @@ function updateItem() {
     },
     body: JSON.stringify(item)
   })
+  .then(response =>response.json())
   .then(() => getItems())
   .catch(error => console.error('Unable to update item.', error));
 
